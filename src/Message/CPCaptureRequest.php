@@ -7,17 +7,17 @@ namespace Omnipay\AuthorizeNet\Message;
  */
 class CPCaptureRequest extends CaptureRequest
 {
-	protected $liveEndpoint = 'https://cardpresent.authorize.net/gateway/transact.dll';
+    protected $liveEndpoint = 'https://cardpresent.authorize.net/gateway/transact.dll';
 
-	public function getData()
-	{
-		$data    = parent::getData();
-		$cp_data = array(
-			'x_cpversion'   => $this->getCPVersion(),
-			'x_market_type' => $this->getMarketType(),
-			'x_device_type' => $this->getDeviceType()
-		);
+    public function getData()
+    {
+        $data    = parent::getData();
+        $cp_data = array(
+            'x_cpversion'   => $this->getCPVersion(),
+            'x_market_type' => $this->getMarketType(),
+            'x_device_type' => $this->getDeviceType()
+        );
 
-		return array_merge($data, $cp_data);
-	}
+        return array_merge($data, $cp_data);
+    }
 }

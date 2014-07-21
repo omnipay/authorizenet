@@ -7,6 +7,6 @@ namespace Omnipay\AuthorizeNet\Message;
  */
 class CPPurchaseRequest extends CPAuthorizeRequest
 {
-	protected $liveEndpoint = 'https://cardpresent.authorize.net/gateway/transact.dll';
-	protected $action       = 'AUTH_CAPTURE';
+    protected $liveEndpoint = 'https://cardpresent.authorize.net/gateway/transact.dll';
+    protected $action       = 'AUTH_CAPTURE';
 }
