@@ -12,6 +12,7 @@ use DateTime;
 use DateTimeZone;
 use Omnipay\Common\Exception\InvalidCreditCardException;
 use Symfony\Component\HttpFoundation\ParameterBag;
+use Omnipay\Common\Helper;
 
 /**
  * Bank Account class
