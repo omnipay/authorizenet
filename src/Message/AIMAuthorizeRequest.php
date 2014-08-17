@@ -34,6 +34,8 @@ class AIMAuthorizeRequest extends AbstractRequest
             $data['x_bank_name'] = $this->getBankAccount()->getBankName();
             $data['x_bank_acct_name'] = $this->getBankAccount()->getName();
             $data['x_echeck_type'] = "WEB";
+            $data['x_recurring_billing'] = "FALSE"; //NEEDED when we set echeck_type is WEB or TEL http://www.authorize.net/support/eCheck.pdf
+
             $data['x_method'] = self::ECHECK;
         }
 
