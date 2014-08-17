@@ -1,7 +1,7 @@
 <?php
 
 namespace Omnipay\AuthorizeNet\Message;
-use Omnipay\Common\BankAccount;
+use Omnipay\AuthorizeNet\BankAccount;
 
 /**
  * Authorize.Net Abstract Request

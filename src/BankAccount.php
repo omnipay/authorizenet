@@ -6,7 +6,7 @@
  * Time: 1:33 PM
  */
 
-namespace Omnipay\Common;
+namespace Omnipay\AuthorizeNet;
 
 use DateTime;
 use DateTimeZone;
