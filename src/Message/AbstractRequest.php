@@ -1,6 +1,7 @@
 <?php
 
 namespace Omnipay\AuthorizeNet\Message;
+
 use Omnipay\AuthorizeNet\BankAccount;
 
 /**
@@ -125,7 +126,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             $data['x_ship_to_state'] = $card->getShippingState();
             $data['x_ship_to_zip'] = $card->getShippingPostcode();
             $data['x_ship_to_country'] = $card->getShippingCountry();
-        } else if($bankAccount = $this->getBankAccount()) {
+        } else if ($bankAccount = $this->getBankAccount()) {
             // customer billing details
             $data['x_first_name'] = $bankAccount->getBillingFirstName();
             $data['x_last_name'] = $bankAccount->getBillingLastName();
