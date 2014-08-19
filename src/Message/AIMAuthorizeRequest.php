@@ -26,7 +26,7 @@ class AIMAuthorizeRequest extends AbstractRequest
             $data['x_exp_date'] = $this->getCard()->getExpiryDate('my');
             $data['x_card_code'] = $this->getCard()->getCvv();
             $data['x_method'] = self::CREDIT_CARD;
-        }else if($bankAccount = $this->getBankAccount()) {
+        } else if ($bankAccount = $this->getBankAccount()) {
             $bankAccount->validate();
             $data['x_bank_aba_code'] = $this->getBankAccount()->getRoutingNumber();
             $data['x_bank_acct_num'] = $this->getBankAccount()->getAccountNumber();
