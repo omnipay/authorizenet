@@ -81,6 +81,7 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         $data['x_amount'] = $this->getAmount();
         $data['x_invoice_num'] = $this->getTransactionId();
         $data['x_description'] = $this->getDescription();
+        $data['x_cust_id'] = $this->getCustomerId();
 
         if ($card = $this->getCard()) {
             // customer billing details

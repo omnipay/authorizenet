@@ -55,4 +55,15 @@ class AIMResponse extends AbstractResponse
     {
         return $this->data[6];
     }
+
+    public function getAccountNumber()
+    {
+        return $this->data[50];
+    }
+
+    public function getCardType()
+    {
+        return $this->data[51];
+    }
+
 }
