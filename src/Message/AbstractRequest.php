@@ -60,6 +60,36 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->setParameter('hashSecret', $value);
     }
 
+    public function setCPVersion($value)
+    {
+        return $this->setParameter('cpVersion', $value);
+    }
+
+    public function getCPVersion()
+    {
+        return $this->getParameter('cpVersion');
+    }
+
+    public function setMarketType($value)
+    {
+        return $this->setParameter('marketType', $value);
+    }
+
+    public function getMarketType()
+    {
+        return $this->getParameter('marketType');
+    }
+
+    public function setDeviceType($value)
+    {
+        return $this->setParameter('deviceType', $value);
+    }
+
+    public function getDeviceType()
+    {
+        return $this->getParameter('deviceType');
+    }
+
     protected function getBaseData()
     {
         $data = array();
