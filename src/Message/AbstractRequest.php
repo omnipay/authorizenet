@@ -2,6 +2,8 @@
 
 namespace Omnipay\AuthorizeNet\Message;
 
+use Omnipay\AuthorizeNet\BankAccount;
+
 /**
  * Authorize.Net Abstract Request
  */
@@ -60,6 +62,20 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         return $this->setParameter('hashSecret', $value);
     }
 
+    public function getBankAccount()
+    {
+        return $this->getParameter('bankAccount');
+    }
+
+    public function setBankAccount($value)
+    {
+        if ($value && !$value instanceof BankAccount) {
+            $value = new BankAccount($value);
+        }
+
+        return $this->setParameter('bankAccount', $value);
+    }
+
     protected function getBaseData()
     {
         $data = array();
@@ -110,6 +126,34 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
             $data['x_ship_to_state'] = $card->getShippingState();
             $data['x_ship_to_zip'] = $card->getShippingPostcode();
             $data['x_ship_to_country'] = $card->getShippingCountry();
+        } elseif ($bankAccount = $this->getBankAccount()) {
+            // customer billing details
+            $data['x_first_name'] = $bankAccount->getBillingFirstName();
+            $data['x_last_name'] = $bankAccount->getBillingLastName();
+            $data['x_company'] = $bankAccount->getBillingCompany();
+            $data['x_address'] = trim(
+                $bankAccount->getBillingAddress1()." \n".
+                $bankAccount->getBillingAddress2()
+            );
+            $data['x_city'] = $bankAccount->getBillingCity();
+            $data['x_state'] = $bankAccount->getBillingState();
+            $data['x_zip'] = $bankAccount->getBillingPostcode();
+            $data['x_country'] = $bankAccount->getBillingCountry();
+            $data['x_phone'] = $bankAccount->getBillingPhone();
+            $data['x_email'] = $bankAccount->getEmail();
+
+            // customer shipping details
+            $data['x_ship_to_first_name'] = $bankAccount->getShippingFirstName();
+            $data['x_ship_to_last_name'] = $bankAccount->getShippingLastName();
+            $data['x_ship_to_company'] = $bankAccount->getShippingCompany();
+            $data['x_ship_to_address'] = trim(
+                $bankAccount->getShippingAddress1()." \n".
+                $bankAccount->getShippingAddress2()
+            );
+            $data['x_ship_to_city'] = $bankAccount->getShippingCity();
+            $data['x_ship_to_state'] = $bankAccount->getShippingState();
+            $data['x_ship_to_zip'] = $bankAccount->getShippingPostcode();
+            $data['x_ship_to_country'] = $bankAccount->getShippingCountry();
         }
 
         return $data;
