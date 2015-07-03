@@ -27,7 +27,7 @@ class SIMCompleteAuthorizeRequestTest extends TestCase
 
         $this->request->setHashSecret('hashsec');
         $this->request->setApiLoginId('apilogin');
-        $this->request->setTransactionId('trnid');
+        $this->request->setTransactionReference('trnid');
         $this->request->setAmount('10.00');
 
         $this->assertSame(md5('hashsecapilogintrnid10.00'), $this->request->getHash());
@@ -45,7 +45,7 @@ class SIMCompleteAuthorizeRequestTest extends TestCase
         $this->request->setApiLoginId('user');
         $this->request->setHashSecret('shhh');
         $this->request->setAmount('10.00');
-        $this->request->setTransactionId(99);
+        $this->request->setTransactionReference(99);
 
         $response = $this->request->send();
 

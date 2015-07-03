@@ -16,7 +16,7 @@ class SIMGatewayTest extends GatewayTestCase
 
         $this->options = array(
             'amount' => '10.00',
-            'transactionId' => '99',
+            'transactionReference' => '99',
             'returnUrl' => 'https://www.example.com/return',
         );
     }
