@@ -16,8 +16,37 @@ class SIMGateway extends AIMGateway
     {
         $parameters = parent::getDefaultParameters();
         $parameters['hashSecret'] = '';
-
         return $parameters;
+    }
+
+    public function getApiLoginId()
+    {
+        return $this->getParameter('apiLoginId');
+    }
+
+    public function setApiLoginId($value)
+    {
+        return $this->setParameter('apiLoginId', $value);
+    }
+
+    public function getTransactionKey()
+    {
+        return $this->getParameter('transactionKey');
+    }
+
+    public function setTransactionKey($value)
+    {
+        return $this->setParameter('transactionKey', $value);
+    }
+
+    public function getDeveloperMode()
+    {
+        return $this->getParameter('developerMode');
+    }
+
+    public function setDeveloperMode($value)
+    {
+        return $this->setParameter('developerMode', $value);
     }
 
     public function getHashSecret()
@@ -40,6 +69,11 @@ class SIMGateway extends AIMGateway
         return $this->createRequest('\Omnipay\AuthorizeNet\Message\SIMCompleteAuthorizeRequest', $parameters);
     }
 
+    public function capture(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\AuthorizeNet\Message\SIMCaptureRequest', $parameters);
+    }
+
     public function purchase(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\AuthorizeNet\Message\SIMPurchaseRequest', $parameters);
@@ -48,5 +82,10 @@ class SIMGateway extends AIMGateway
     public function completePurchase(array $parameters = array())
     {
         return $this->completeAuthorize($parameters);
+    }
+
+    public function void(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\AuthorizeNet\Message\SIMVoidRequest', $parameters);
     }
 }

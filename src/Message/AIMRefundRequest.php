@@ -2,23 +2,28 @@
 
 namespace Omnipay\AuthorizeNet\Message;
 
+use Omnipay\Common\CreditCard;
+
 /**
- * Authorize.Net Refund Request
+ * Authorize.net AIM Refund Request
  */
-class AIMRefundRequest extends AbstractRequest
+class AIMRefundRequest extends AIMAbstractRequest
 {
-    protected $action = 'CREDIT';
+    protected $action = 'refundTransaction';
 
     public function getData()
     {
-        $data = $this->getBaseData('RefundTransaction');
+        $this->validate('transactionReference', 'amount', 'card');
 
-        $this->validate('amount', 'transactionReference');
+        /** @var CreditCard $card */
+        $card = $this->getCard();
 
-        $data['x_trans_id'] = $this->getTransactionReference();
-        $data['x_card_num'] = $this->getCard()->getNumber();
-        $data['x_exp_date'] = $this->getCard()->getExpiryDate('my');
-        $data['x_amount'] = $this->getAmount();
+        $data = $this->getBaseData();
+        $data->transactionRequest->amount = $this->getParameter('amount');
+        $data->transactionRequest->payment->creditCard->cardNumber = $card->getNumber();
+        $data->transactionRequest->payment->creditCard->expirationDate = $card->getExpiryDate('my');
+        $data->transactionRequest->refTransId = $this->getTransactionReference();
+        $this->addTestModeSetting($data);
 
         return $data;
     }
