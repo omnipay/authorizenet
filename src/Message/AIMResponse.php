@@ -48,11 +48,18 @@ class AIMResponse extends AbstractResponse
      */
     public function getResultCode()
     {
-        return intval((string)$this->data->transactionResponse[0]->responseCode);
+        if (isset($this->data->transactionResponse[0]->responseCode)) {
+            return intval((string)$this->data->transactionResponse[0]->responseCode);
+        } else {
+            // If there is no transactionResponse element present then there was an error with authentication.
+            // Hence we can return 3 for Error
+            return 3;
+        }
     }
 
     /**
      * A more detailed version of the Result/Response code.
+     * CHECKME: the message and error codes are NOT numeric, so the intval() probably needs to be removed.
      *
      * @return int|null
      */
@@ -67,9 +74,21 @@ class AIMResponse extends AbstractResponse
         } elseif (isset($this->data->transactionResponse[0]->errors)) {
             // In case of an unsuccessful transaction, an "errors" element is present
             $code = intval((string)$this->data->transactionResponse[0]->errors[0]->error[0]->errorCode);
+
+        } elseif (isset($this->data->messages[0]->message)) {
+            // In case of an unsuccessful authentication, the error will be in a different structure.
+            $code = (string)$this->data->messages[0]->message->code;
         }
 
         return $code;
+    }
+
+    /**
+     * @inherit
+     */
+    public function getCode()
+    {
+        return $this->getReasonCode();
     }
 
     /**
@@ -88,6 +107,10 @@ class AIMResponse extends AbstractResponse
         } elseif (isset($this->data->transactionResponse[0]->errors)) {
             // In case of an unsuccessful transaction, an "errors" element is present
             $message = (string)$this->data->transactionResponse[0]->errors[0]->error[0]->errorText;
+
+        } elseif (isset($this->data->messages[0]->message)) {
+            // In case of invalid authentication or incorrectly structured request message.
+            $message = (string)$this->data->messages[0]->message->text;
         }
 
         return $message;
