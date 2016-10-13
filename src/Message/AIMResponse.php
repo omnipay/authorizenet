@@ -117,24 +117,28 @@ class AIMResponse extends AbstractResponse
      */
     public function getTransactionReference($serialize = true)
     {
-        $body = $this->data->transactionResponse[0];
-        $transactionRef = new TransactionReference();
-        $transactionRef->setApprovalCode((string)$body->authCode);
-        $transactionRef->setTransId((string)$body->transId);
+        if ($this->isSuccessful()) {
+            $body = $this->data->transactionResponse[0];
+            $transactionRef = new TransactionReference();
+            $transactionRef->setApprovalCode((string)$body->authCode);
+            $transactionRef->setTransId((string)$body->transId);
 
-        try {
-            // Need to store card details in the transaction reference since it is required when doing a refund
-            if ($card = $this->request->getCard()) {
-                $transactionRef->setCard(array(
-                    'number' => $card->getNumberLastFour(),
-                    'expiry' => $card->getExpiryDate('mY')
-                ));
-            } elseif ($cardReference = $this->request->getCardReference()) {
-                $transactionRef->setCardReference(new CardReference($cardReference));
+            try {
+                // Need to store card details in the transaction reference since it is required when doing a refund
+                if ($card = $this->request->getCard()) {
+                    $transactionRef->setCard(array(
+                        'number' => $card->getNumberLastFour(),
+                        'expiry' => $card->getExpiryDate('mY')
+                    ));
+                } elseif ($cardReference = $this->request->getCardReference()) {
+                    $transactionRef->setCardReference(new CardReference($cardReference));
+                }
+            } catch (\Exception $e) {
             }
-        } catch (\Exception $e) {
+
+            return $serialize ? (string)$transactionRef : $transactionRef;
         }
 
-        return $serialize ? (string)$transactionRef : $transactionRef;
+        return null;
     }
 }
