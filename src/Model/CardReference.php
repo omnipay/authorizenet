@@ -85,7 +85,7 @@ class CardReference
 
     public function getCardCode()
     {
-        return $this->shippingProfileId;
+        return $this->cardCode;
     }
 
     public function setCardCode($code)
