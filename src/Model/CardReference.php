@@ -14,6 +14,7 @@ class CardReference
     private $customerProfileId = null;
     private $paymentProfileId = null;
     private $shippingProfileId = null;
+    private $cardCode = null;
 
     /**
      * @param string $data JSON encoded string representing a card reference
@@ -27,6 +28,9 @@ class CardReference
             }
             if (isset($data->customerPaymentProfileId)) {
                 $this->paymentProfileId = $data->customerPaymentProfileId;
+            }
+            if (isset($data->cardCode)) {
+                $this->cardCode = $data->cardCode;
             }
             if (isset($data->customerShippingAddressId)) {
                 $this->shippingProfileId = $data->customerShippingAddressId;
@@ -42,6 +46,9 @@ class CardReference
         );
         if ($this->shippingProfileId) {
             $data['customerShippingAddressId'] = $this->shippingProfileId;
+        }
+        if ($this->cardCode) {
+            $data['cardCode'] = $this->cardCode;
         }
         return json_encode($data);
     }
@@ -74,5 +81,15 @@ class CardReference
     public function setShippingProfileId($shippingProfileId)
     {
         $this->shippingProfileId = $shippingProfileId;
+    }
+
+    public function getCardCode()
+    {
+        return $this->shippingProfileId;
+    }
+
+    public function setCardCode($code)
+    {
+        $this->cardCode = $code;
     }
 }

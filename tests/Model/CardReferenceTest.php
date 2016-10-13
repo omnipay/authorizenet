@@ -10,7 +10,7 @@ class CardReferenceTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->data = '{"customerProfileId":"203830614","customerPaymentProfileId":"197483796","customerShippingAddressId":"768245213"}';
+        $this->data = '{"customerProfileId":"203830614","customerPaymentProfileId":"197483796","customerShippingAddressId":"768245213","cardCode":"900"}';
         $this->cardReference = new CardReference($this->data);
     }
 
@@ -19,6 +19,7 @@ class CardReferenceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('203830614', $this->cardReference->getCustomerProfileId());
         $this->assertEquals('197483796', $this->cardReference->getPaymentProfileId());
         $this->assertEquals('768245213', $this->cardReference->getShippingProfileId());
+        $this->assertEquals('900', $this->cardReference->getCardCode());
     }
 
     public function testShouldSerializeModel()
