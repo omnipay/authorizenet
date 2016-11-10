@@ -14,7 +14,7 @@ class CIMUpdatePaymentProfileRequest extends CIMCreatePaymentProfileRequest
     public function getData()
     {
 	      $cardReference = $this->getCardReference(false);
-	      $this->setCustomerId($cardReference->getCustomerProfileId());
+	      $this->setCustomerProfileId($cardReference->getCustomerProfileId());
 	      $this->setCustomerPaymentProfileId($cardReference->getPaymentProfileId());
 
         $this->validate('card', 'customerProfileId', 'customerPaymentProfileId');
