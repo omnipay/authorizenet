@@ -30,9 +30,6 @@
     "require": {
         "glp/omnipay-common": "~2.2"
     },
-    "require-dev": {
-        "omnipay/tests": "~2.0"
-    },
     "extra": {
         "branch-alias": {
             "dev-master": "2.0.x-dev"
