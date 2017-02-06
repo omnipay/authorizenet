@@ -26,6 +26,9 @@ class CIMAuthorizeRequest extends AIMAuthorizeRequest
         if ($shippingProfileId = $cardRef->getShippingProfileId()) {
             $req->profile->shippingProfileId = $shippingProfileId;
         }
+        if ($cardCode = $cardRef->getCardCode()) {
+            $req->profile->paymentProfile->cardCode = $cardCode;
+        }
 
         $invoiceNumber = $this->getInvoiceNumber();
         if (!empty($invoiceNumber)) {
