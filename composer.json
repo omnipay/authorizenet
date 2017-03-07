@@ -1,5 +1,5 @@
 {
-    "name": "omnipay/authorizenet",
+    "name": "glp/omnipay-authorizenet",
     "type": "library",
     "description": "Authorize.Net gateway for the Omnipay payment processing library",
     "keywords": [
@@ -28,10 +28,7 @@
         "psr-4": { "Omnipay\\AuthorizeNet\\" : "src/" }
     },
     "require": {
-        "omnipay/common": "~2.2"
-    },
-    "require-dev": {
-        "omnipay/tests": "~2.0"
+        "glp/omnipay-common": "~2.2"
     },
     "extra": {
         "branch-alias": {
