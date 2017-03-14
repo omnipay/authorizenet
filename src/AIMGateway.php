@@ -56,6 +56,16 @@ class AIMGateway extends AbstractGateway
         return $this->getParameter('developerMode');
     }
 
+    public function setTestMode($value)
+    {
+        return $this->setParameter('testMode', $value);
+    }
+    
+    public function getTestMode()
+    {
+        return $this->getParameter('testMode');
+    }
+
     public function setDeveloperMode($value)
     {
         return $this->setParameter('developerMode', $value);
