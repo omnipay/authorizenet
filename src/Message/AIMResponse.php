@@ -141,6 +141,18 @@ class AIMResponse extends AbstractResponse
     }
 
     /**
+     * Returns the transaction Id from the gateway
+     * @return string
+     */
+    public function getTransactionId() {
+        if (isset($this->data->transactionResponse[0])) {
+            $body = $this->data->transactionResponse[0];
+            return (string)$body->transId;
+        }
+        return ''
+    }
+
+    /**
      * A composite key containing the gateway provided transaction reference as
      * well as other data points that may be required for subsequent transactions
      * that may need to modify this one.
