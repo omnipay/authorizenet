@@ -149,7 +149,7 @@ class AIMResponse extends AbstractResponse
             $body = $this->data->transactionResponse[0];
             return (string)$body->transId;
         }
-        return ''
+        return '';
     }
 
     /**
