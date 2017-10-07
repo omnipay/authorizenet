@@ -94,6 +94,16 @@ abstract class SIMAbstractRequest extends AbstractRequest
         return $this->getParameter('invoiceNumber');
     }
 
+    public function getDeviceType()
+    {
+        return $this->getParameter('deviceType');
+    }
+
+    public function setDeviceType($value)
+    {
+        return $this->setParameter('deviceType', $value);
+    }
+
     /**
      * Base data used only for the AIM API.
      */
