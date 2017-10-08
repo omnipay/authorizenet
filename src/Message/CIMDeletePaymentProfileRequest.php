@@ -11,9 +11,9 @@ class CIMDeletePaymentProfileRequest extends CIMAbstractRequest
 
     public function getData()
     {
-		    $cardRef = $this->getCardReference(false);
-		    $this->setCustomerProfileId($cardRef->getCustomerProfileId());
-		    $this->setCustomerPaymentProfileId($cardRef->getPaymentProfileId());
+        $cardRef = $this->getCardReference(false);
+        $this->setCustomerProfileId($cardRef->getCustomerProfileId());
+        $this->setCustomerPaymentProfileId($cardRef->getPaymentProfileId());
 
         $this->validate('customerProfileId', 'customerPaymentProfileId');
 
