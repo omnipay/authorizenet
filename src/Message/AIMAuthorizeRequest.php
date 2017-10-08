@@ -20,6 +20,7 @@ class AIMAuthorizeRequest extends AIMAbstractRequest
         $this->addSolutionId($data);
         $this->addBillingData($data);
         $this->addCustomerIP($data);
+        $this->addRetail($data);
         $this->addTransactionSettings($data);
 
         return $data;
@@ -36,13 +37,29 @@ class AIMAuthorizeRequest extends AIMAbstractRequest
             return;
         }
 
+        // The CreditCard object must be present.
         $this->validate('card');
+
         /** @var CreditCard $card */
         $card = $this->getCard();
-        $card->validate();
-        $data->transactionRequest->payment->creditCard->cardNumber = $card->getNumber();
-        $data->transactionRequest->payment->creditCard->expirationDate = $card->getExpiryDate('my');
-        $data->transactionRequest->payment->creditCard->cardCode = $card->getCvv();
+
+        if ($card->getTracks()) {
+            // Card present
+            if ($track1 = $card->getTrack1()) {
+                $data->transactionRequest->payment->trackData->track1 = $track1;
+            } elseif ($track2 = $card->getTrack2()) {
+                $data->transactionRequest->payment->trackData->track2 = $track2;
+            }
+        } else {
+            // Card not present.
+
+            // Validate sufficient card details have been supplied.
+            $card->validate();
+
+            $data->transactionRequest->payment->creditCard->cardNumber = $card->getNumber();
+            $data->transactionRequest->payment->creditCard->expirationDate = $card->getExpiryDate('my');
+            $data->transactionRequest->payment->creditCard->cardCode = $card->getCvv();
+        }
     }
 
     protected function addCustomerIP(\SimpleXMLElement $data)
@@ -50,6 +67,15 @@ class AIMAuthorizeRequest extends AIMAbstractRequest
         $ip = $this->getClientIp();
         if (!empty($ip)) {
             $data->transactionRequest->customerIP = $ip;
+        }
+    }
+
+    protected function addRetail(\SimpleXMLElement $data)
+    {
+        if ($this->isCardPresent()) {
+            // Retail element is required for card present transactions
+            $data->transactionRequest->retail->marketType = 2;
+            $data->transactionRequest->retail->deviceType = $this->getDeviceType();
         }
     }
 }

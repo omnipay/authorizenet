@@ -110,6 +110,16 @@ abstract class AIMAbstractRequest extends AbstractRequest
         return $this->setParameter('solutionId', $value);
     }
 
+    public function getDeviceType()
+    {
+        return $this->getParameter('deviceType');
+    }
+
+    public function setDeviceType($value)
+    {
+        return $this->setParameter('deviceType', $value);
+    }
+
     /**
      * @return TransactionReference
      */
@@ -325,18 +335,23 @@ abstract class AIMAbstractRequest extends AbstractRequest
         $i = 0;
 
         // The test mode setting indicates whether or not this is a live request or a test request
-        $data->transactionRequest->transactionSettings->setting[$i]->settingName = 'testRequest';
-        $data->transactionRequest->transactionSettings->setting[$i]->settingValue = $this->getTestMode()
-            ? 'true'
-            : 'false';
+        $transactionRequest = $data->transactionRequest;
+        $transactionRequest->transactionSettings->setting[$i]->settingName = 'testRequest';
+        $transactionRequest->transactionSettings->setting[$i]->settingValue = $this->getTestMode() ? 'true' : 'false';
 
         // The duplicate window setting specifies the threshold for AuthorizeNet's duplicate transaction detection logic
         if (!is_null($this->getDuplicateWindow())) {
             $i++;
-            $data->transactionRequest->transactionSettings->setting[$i]->settingName = 'duplicateWindow';
-            $data->transactionRequest->transactionSettings->setting[$i]->settingValue = $this->getDuplicateWindow();
+            $transactionRequest->transactionSettings->setting[$i]->settingName = 'duplicateWindow';
+            $transactionRequest->transactionSettings->setting[$i]->settingValue = $this->getDuplicateWindow();
         }
 
         return $data;
+    }
+
+    protected function isCardPresent()
+    {
+        // If the credit card has track data, then consider this a "card present" scenario
+        return ($card = $this->getCard()) && $card->getTracks();
     }
 }

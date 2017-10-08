@@ -11,38 +11,48 @@ class CIMAuthorizeRequest extends AIMAuthorizeRequest
 {
     protected function addPayment(\SimpleXMLElement $data)
     {
-        $this->validate('cardReference');
+        if ($this->isCardPresent()) {
+            // Prefer the track data if present over the payment profile (better rate)
+            return parent::addPayment($data);
+        } else {
+            $this->validate('cardReference');
 
-        /** @var mixed $req */
-        $req = $data->transactionRequest;
+            /** @var mixed $req */
+            $req = $data->transactionRequest;
 
-        /** @var CardReference $cardRef */
-        $cardRef = $this->getCardReference(false);
+            /** @var CardReference $cardRef */
+            $cardRef = $this->getCardReference(false);
 
-        $req->profile->customerProfileId = $cardRef->getCustomerProfileId();
+            $req->profile->customerProfileId = $cardRef->getCustomerProfileId();
 
-        $req->profile->paymentProfile->paymentProfileId = $cardRef->getPaymentProfileId();
+            $req->profile->paymentProfile->paymentProfileId = $cardRef->getPaymentProfileId();
 
-        if ($shippingProfileId = $cardRef->getShippingProfileId()) {
-            $req->profile->shippingProfileId = $shippingProfileId;
+            if ($shippingProfileId = $cardRef->getShippingProfileId()) {
+                $req->profile->shippingProfileId = $shippingProfileId;
+            }
+
+            $invoiceNumber = $this->getInvoiceNumber();
+            if (!empty($invoiceNumber)) {
+                $req->order->invoiceNumber = $invoiceNumber;
+            }
+
+            $description = $this->getDescription();
+            if (!empty($description)) {
+                $req->order->description = $description;
+            }
+
+            return $data;
         }
 
-        $invoiceNumber = $this->getInvoiceNumber();
-        if (!empty($invoiceNumber)) {
-            $req->order->invoiceNumber = $invoiceNumber;
-        }
-
-        $description = $this->getDescription();
-        if (!empty($description)) {
-            $req->order->description = $description;
-        }
-
-        return $data;
     }
 
     protected function addBillingData(\SimpleXMLElement $data)
     {
-        // Do nothing since billing information is already part of the customer profile
-        return $data;
+        if ($this->isCardPresent()) {
+            return parent::addBillingData($data);
+        } else {
+            // Do nothing since billing information is already part of the customer profile
+            return $data;
+        }
     }
 }

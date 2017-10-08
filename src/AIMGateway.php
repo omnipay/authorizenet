@@ -14,6 +14,20 @@ use Omnipay\Common\AbstractGateway;
  */
 class AIMGateway extends AbstractGateway
 {
+    /**
+     * The device type collecting credit card data.
+     */
+    const DEVICE_TYPE_UNKNOWN = 1;
+    const DEVICE_TYPE_UNATTENDED_TERMINAL = 2;
+    const DEVICE_TYPE_SELF_SERVICE_TERMINAL = 3;
+    const DEVICE_TYPE_ELECTRONIC_CASH_REGISTER = 4;
+    const DEVICE_TYPE_PC_TERMINAL = 5;
+    const DEVICE_TYPE_AIRPAY = 6;
+    const DEVICE_TYPE_WIRELESS_POS = 7;
+    const DEVICE_TYPE_WEBSITE = 8;
+    const DEVICE_TYPE_DIAL_TERMINAL = 9;
+    const DEVICE_TYPE_VIRTUAL_TERMINAL = 10;
+
     public function getName()
     {
         return 'Authorize.Net AIM';
@@ -29,6 +43,7 @@ class AIMGateway extends AbstractGateway
             'hashSecret'        => '',
             'liveEndpoint'      => 'https://api2.authorize.net/xml/v1/request.api',
             'developerEndpoint' => 'https://apitest.authorize.net/xml/v1/request.api',
+            'deviceType'        => static::DEVICE_TYPE_UNKNOWN
         );
     }
 
@@ -106,6 +121,35 @@ class AIMGateway extends AbstractGateway
     public function setDuplicateWindow($value)
     {
         return $this->setParameter('duplicateWindow', $value);
+    }
+
+    public function getDeviceType()
+    {
+        return $this->getParameter('deviceType');
+    }
+
+    /**
+     * Sets the type of device used to collect the credit card data.
+     * A device type is required for card present transactions.
+     *
+     * 1 = Unknown
+     * 2 = Unattended Terminal
+     * 3 = Self Service Terminal
+     * 4 = Electronic Cash Register
+     * 5 = Personal Computer-Based Terminal
+     * 6 = AirPay
+     * 7 = Wireless POS
+     * 8 = Website
+     * 9 = Dial Terminal
+     * 10 = Virtual Terminal
+     *
+     * @see http://developer.authorize.net/api/reference/#payment-transactions-charge-a-credit-card
+     * @param $value
+     * @return $this
+     */
+    public function setDeviceType($value)
+    {
+        return $this->setParameter('deviceType', $value);
     }
 
     /**
