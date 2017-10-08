@@ -37,10 +37,12 @@ class AIMAuthorizeRequest extends AIMAbstractRequest
             return;
         }
 
+        // The CreditCard object must be present.
         $this->validate('card');
+
         /** @var CreditCard $card */
         $card = $this->getCard();
-        $card->validate();
+
         if ($card->getTracks()) {
             // Card present
             if ($track1 = $card->getTrack1()) {
@@ -49,7 +51,11 @@ class AIMAuthorizeRequest extends AIMAbstractRequest
                 $data->transactionRequest->payment->trackData->track2 = $track2;
             }
         } else {
-            // Card not present
+            // Card not present.
+
+            // Validate sufficient card details have been supplied.
+            $card->validate();
+
             $data->transactionRequest->payment->creditCard->cardNumber = $card->getNumber();
             $data->transactionRequest->payment->creditCard->expirationDate = $card->getExpiryDate('my');
             $data->transactionRequest->payment->creditCard->cardCode = $card->getCvv();

@@ -96,6 +96,13 @@ class AIMAuthorizeRequestTest extends TestCase
     {
         $card = $this->getValidCard();
         $card['tracks'] = '%B4242424242424242^SMITH/JOHN ^2511126100000000000000444000000?;4242424242424242=25111269999944401?';
+
+        // If sending tracks, then the card number and expiry date are not required.
+        unset($card['number']);
+        unset($card['expiryMonth']);
+        unset($card['expiryYear']);
+        unset($card['cvv']);
+
         $this->request->initialize(array(
             'amount' => '12.12',
             'card' => $card,
