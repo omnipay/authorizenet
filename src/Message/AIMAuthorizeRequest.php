@@ -44,7 +44,7 @@ class AIMAuthorizeRequest extends AIMAbstractRequest
 
             $data->transactionRequest->payment->trackData->track1 = $this->getTrack1();
             $data->transactionRequest->payment->trackData->track2 = $this->getTrack2();
-        } catch(InvalidRequestException $ire) {
+        } catch (InvalidRequestException $ire) {
             // Try creditCard data as normal
             $this->validate('card');
             
@@ -84,5 +84,4 @@ class AIMAuthorizeRequest extends AIMAbstractRequest
     {
         return $this->setParameter('track2', $value);
     }
-
 }
