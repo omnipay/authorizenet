@@ -24,6 +24,8 @@ class AIMAuthorizeRequestTest extends TestCase
                 'solutionId' => 'SOL12345ID',
                 'track1' => 'track1Test',
                 'track2' => 'track2Test',
+                'marketType' => '2',
+                'deviceType' => '1',
             )
         );
     }
@@ -39,6 +41,8 @@ class AIMAuthorizeRequestTest extends TestCase
         $this->assertEquals('SOL12345ID', $data->transactionRequest->solution->id);
         $this->assertEquals('track1Test', $data->transactionRequest->payment->trackData->track1);
         $this->assertEquals('track2Test', $data->transactionRequest->payment->trackData->track2);
+        $this->assertEquals('2', $data->transactionRequest->retail->marketType);
+        $this->assertEquals('1', $data->transactionRequest->retail->deviceType);
 
         // Issue #38 Make sure the transactionRequest properties are correctly ordered.
         // This feels messy, but works.
@@ -55,6 +59,7 @@ class AIMAuthorizeRequestTest extends TestCase
             "billTo",
             "shipTo",
             "customerIP",
+            "retail",
             "transactionSettings"
         );
         $this->assertEquals($keys, $transactionRequestProperties);
