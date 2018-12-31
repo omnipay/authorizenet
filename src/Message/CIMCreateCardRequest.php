@@ -89,14 +89,30 @@ class CIMCreateCardRequest extends CIMAbstractRequest
         if ($card = $this->getCard()) {
             $req = $data->addChild('billTo');
             // A card is present, so include billing details
-            $req->firstName = $card->getBillingFirstName();
-            $req->lastName = $card->getBillingLastName();
-            $req->company = $card->getBillingCompany();
-            $req->address = trim($card->getBillingAddress1() . " \n" . $card->getBillingAddress2());
-            $req->city = $card->getBillingCity();
-            $req->state = $card->getBillingState();
-            $req->zip = $card->getBillingPostcode();
-            $req->country = $card->getBillingCountry();
+		        if($card->getBillingFirstName()) {
+			        $req->firstName = $card->getBillingFirstName();
+		        }
+		        if($card->getBillingLastName()) {
+			        $req->lastName = $card->getBillingLastName();
+		        }
+		        if($card->getBillingCompany()) {
+			        $req->company = $card->getBillingCompany();
+		        }
+		        if($card->getBillingAddress1()) {
+			        $req->address = trim($card->getBillingAddress1() . " \n" . $card->getBillingAddress2());
+		        }
+		        if($card->getBillingCity()) {
+			        $req->city = $card->getBillingCity();
+		        }
+		        if($card->getBillingState()) {
+			        $req->state = $card->getBillingState();
+		        }
+		        if($card->getBillingPostcode()) {
+			        $req->zip = $card->getBillingPostcode();
+		        }
+		        if($card->getBillingCountry()) {
+			        $req->country = $card->getBillingCountry();
+		        }
 
             $defaultBillTo = $this->getParameter('defaultBillTo');
             if (is_array($defaultBillTo)) {
