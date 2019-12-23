@@ -25,7 +25,7 @@ class AIMPaymentPlanQueryResponse extends AbstractQueryResponse
         );
 
         try {
-            $xml = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOWARNING);
+            $xml = @simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOWARNING);
         } catch (\Exception $e) {
             throw new InvalidResponseException();
         }

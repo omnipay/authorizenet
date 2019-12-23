@@ -32,7 +32,7 @@ abstract class CIMAbstractResponse extends AbstractResponse
         $xml = preg_replace('/<' . $xmlRootElement . '[^>]+>/', '<' . $xmlRootElement . '>', (string)$data);
 
         try {
-            $xml = simplexml_load_string($xml);
+            $xml = @simplexml_load_string($xml);
         } catch (\Exception $e) {
             throw new InvalidResponseException();
         }
