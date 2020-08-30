@@ -171,10 +171,17 @@ class AIMResponse extends AbstractResponse
             try {
                 // Need to store card details in the transaction reference since it is required when doing a refund
                 if ($card = $this->request->getCard()) {
-                    $transactionRef->setCard(array(
-                        'number' => $card->getNumberLastFour(),
-                        'expiry' => $card->getExpiryDate('mY')
-                    ));
+                    if (isset($card->getNumberLastFour())) {
+                        $transactionRef->setCard(array(
+                            'number' => $card->getNumberLastFour(),
+                            'expiry' => $card->getExpiryDate('mY')
+                        ));
+                    } elseif (isset($body->accountNumber)) {
+                        $transactionRef->setCard(array(
+                            'number' => substr((string)$body->accountNumber, -4, 4) ?: null,
+                            'expiry' => $card->getExpiryDate('mY')
+                        ));
+                    }
                 } elseif ($cardReference = $this->request->getCardReference()) {
                     $transactionRef->setCardReference(new CardReference($cardReference));
                 }
