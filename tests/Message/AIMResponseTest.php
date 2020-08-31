@@ -39,6 +39,40 @@ class AIMResponseTest extends TestCase
         $this->assertSame('Visa', $response->getAccountType());
     }
 
+    public function testAuthorizeCardlessSuccess()
+    {
+        $httpResponse = $this->getMockHttpResponse('AIMAuthorizeCardlessSuccess.txt');
+        $request = new AIMAuthorizeRequest($this->getHttpClient(), $this->getHttpRequest());
+        $request->initialize(
+            array(
+                'clientIp' => '10.0.0.1',
+                'amount' => '12.00',
+                'customerId' => 'cust-id',
+                'card' => array(
+                    'number' => null,
+                    'expiry' => '121999'
+                ),
+                'duplicateWindow' => 0,
+                'solutionId' => 'SOL12345ID',
+                'marketType' => '2',
+                'deviceType' => '1',
+            )
+        );
+        $request->setOpaqueDataDescriptor('COMMON.ACCEPT.INAPP.PAYMENT');
+        $request->setOpaqueDataValue('jb2RlIjoiNTB');
+        $response = new AIMResponse($request, $httpResponse->getBody());
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertSame('{"approvalCode":"GA4OQP","transId":"2184493132","card":{"number":"1111","expiry":"121999"}}', $response->getTransactionReference());
+        $this->assertSame('This transaction has been approved.', $response->getMessage());
+        $this->assertSame(1, $response->getResultCode());
+        $this->assertSame(1, $response->getReasonCode());
+        $this->assertSame('GA4OQP', $response->getAuthorizationCode());
+        $this->assertSame('Y', $response->getAVSCode());
+        $this->assertSame('P', $response->getCVVCode());
+        $this->assertSame('Visa', $response->getAccountType());
+    }
+
     public function testAuthorizeFailure()
     {
         $httpResponse = $this->getMockHttpResponse('AIMAuthorizeFailure.txt');
