@@ -5,6 +5,9 @@ namespace Omnipay\AuthorizeNet;
 use Omnipay\AuthorizeNet\Message\AIMAuthorizeRequest;
 use Omnipay\AuthorizeNet\Message\AIMCaptureOnlyRequest;
 use Omnipay\AuthorizeNet\Message\AIMCaptureRequest;
+use Omnipay\AuthorizeNet\Message\AIMHeldTransactionRequest;
+use Omnipay\AuthorizeNet\Message\AIMTransactionDetailsRequest;
+use Omnipay\AuthorizeNet\Message\AIMUnsettledTransactionsRequest;
 use Omnipay\AuthorizeNet\Message\Query\AIMPaymentPlanQueryResponse;
 use Omnipay\AuthorizeNet\Message\AIMPurchaseRequest;
 use Omnipay\AuthorizeNet\Message\AIMRefundRequest;
@@ -154,6 +157,30 @@ class AIMGateway extends AbstractGateway
     {
         return $this->createRequest(
             AIMCaptureOnlyRequest::class,
+            $parameters
+        );
+    }
+
+    public function fetchTransactionDetails(array $parameters = [])
+    {
+        return $this->createRequest(
+            AIMTransactionDetailsRequest::class,
+            $parameters
+        );
+    }
+
+    public function fetchUnsettledTransactions(array $parameters = [])
+    {
+        return $this->createRequest(
+            AIMUnsettledTransactionsRequest::class,
+            $parameters
+        );
+    }
+
+    public function updateHeldTransaction(array $parameters = [])
+    {
+        return $this->createRequest(
+            AIMHeldTransactionRequest::class,
             $parameters
         );
     }

@@ -63,6 +63,11 @@ class AIMResponse extends AbstractResponse
             return intval((string)$this->data->transactionResponse->responseCode);
         }
 
+        // If there is messages, then we get the code from that.
+        if (isset($this->data->messages)) {
+            return (string)$this->data->messages->resultCode === 'Ok';
+        }
+
         // No transaction response, so return 3 aka "error".
         return static::TRANSACTION_RESULT_CODE_ERROR;
     }
@@ -164,6 +169,11 @@ class AIMResponse extends AbstractResponse
 
         if (isset($this->data->transactionResponse)) {
             $body = $this->data->transactionResponse;
+        } else if (isset($this->data->transaction)) {
+            $body = $this->data->transaction;
+        }
+
+        if (isset($body)) {
             $transactionRef = new TransactionReference();
             $transactionRef->setApprovalCode((string)$body->authCode);
             $transactionRef->setTransId((string)$body->transId);
