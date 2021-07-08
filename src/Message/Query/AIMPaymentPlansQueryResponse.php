@@ -17,7 +17,7 @@ class AIMPaymentPlansQueryResponse extends AbstractQueryResponse
         $xml = preg_replace('/<ARBGetSubscriptionListRequest[^>]+>/', '<ARBGetSubscriptionListRequest>', (string)$data);
 
         try {
-            $xml = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOWARNING);
+            $xml = @simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOWARNING);
         } catch (\Exception $e) {
             throw new InvalidResponseException();
         }

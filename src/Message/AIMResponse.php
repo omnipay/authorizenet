@@ -32,7 +32,7 @@ class AIMResponse extends AbstractResponse
         $xml = preg_replace('/<createTransactionResponse[^>]+>/', '<createTransactionResponse>', (string)$data);
 
         try {
-            $xml = simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOWARNING);
+            $xml = @simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOWARNING);
         } catch (\Exception $e) {
             throw new InvalidResponseException();
         }
